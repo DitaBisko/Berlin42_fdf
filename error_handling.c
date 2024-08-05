@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handling.c                                    :+:      :+:    :+:   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbisko <dbisko@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 11:14:06 by dbisko            #+#    #+#             */
-/*   Updated: 2024/07/18 11:14:06 by dbisko           ###   ########.fr       */
+/*   Updated: 2024/08/04 17:05:58 by dbisko           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,51 @@ void	free_int_arr(int **arr, int count)
 		i++;
 	}
 	free(arr);
+}
+
+void	free_split_line(char **split_line, int i)
+{
+	if (split_line != NULL)
+	{
+		while (i > -1)
+		{
+			if (split_line[i] != NULL)
+				free(split_line[i]);
+			i--;
+		}
+	}
+	free(split_line);
+}
+
+void	safe_free_line(char *line)
+{
+	if (line != NULL)
+		free(line);
+}
+
+void    free_fdf(t_fdf *map)
+{
+	if (map->arr_map != NULL)
+		free_int_arr(map->arr_map, map->arr_height);
+	if (map->arr_color != NULL)
+		free_int_arr(map->arr_color, map->arr_height);
+	if (map->pixel_data)
+		free(map->pixel_data);
+	if (map->img)
+	{
+		mlx_destroy_image(); // mlx_destroy_image(map->mlx, map->img);
+		map->img = NULL;
+	}
+	if (map->win)
+	{
+		mlx_destroy_window(map->mlx); // mlx_destroy_window(map->mlx, map->win);
+		map->win = NULL;
+	}
+	if (map->mlx)
+	{
+		mlx_destroy_display(map->mlx);
+		map->mlx = NULL;
+	}
+	if (map != NULL)
+		free(map);
 }

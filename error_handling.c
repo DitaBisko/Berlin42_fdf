@@ -51,29 +51,42 @@ void	safe_free_line(char *line)
 		free(line);
 }
 
-void    free_fdf(t_fdf *map)
+void free_fdf(t_fdf *map)
 {
-	if (map->arr_map != NULL)
-		free_int_arr(map->arr_map, map->arr_height);
-	if (map->arr_color != NULL)
-		free_int_arr(map->arr_color, map->arr_height);
-	if (map->pixel_data)
-		free(map->pixel_data);
-	if (map->img)
-	{
-		mlx_destroy_image(); // mlx_destroy_image(map->mlx, map->img);
-		map->img = NULL;
-	}
-	if (map->win)
-	{
-		mlx_destroy_window(map->mlx); // mlx_destroy_window(map->mlx, map->win);
-		map->win = NULL;
-	}
-	if (map->mlx)
-	{
-		mlx_destroy_display(map->mlx);
-		map->mlx = NULL;
-	}
-	if (map != NULL)
-		free(map);
+    if (map == NULL)
+        return;
+
+    if (map->arr_map != NULL)
+    {
+        free_int_arr(map->arr_map, map->arr_height);
+        map->arr_map = NULL; // Prevent double free
+    }
+    if (map->arr_color != NULL)
+    {
+        free_int_arr(map->arr_color, map->arr_height);
+        map->arr_color = NULL; // Prevent double free
+    }
+    if (map->pixel_data != NULL)
+    {
+        free(map->pixel_data);
+        map->pixel_data = NULL; // Prevent double free
+    }
+
+    if (map->img != NULL)
+    {
+        mlx_destroy_image(map->mlx, map->img);
+        map->img = NULL; // Prevent double free
+    }
+    if (map->win != NULL)
+    {
+        mlx_destroy_window(map->mlx, map->win);
+        map->win = NULL; // Prevent double free
+    }
+    if (map->mlx != NULL)
+    {
+        mlx_destroy_display(map->mlx); // This is often not necessary
+        map->mlx = NULL; // Prevent double free
+    }
+
+    free(map); // Free the structure itself
 }

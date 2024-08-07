@@ -6,7 +6,7 @@
 #    By: dbisko <dbisko@student.42berlin.de>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 15:13:25 by dbisko            #+#    #+#              #
-#    Updated: 2023/12/04 17:52:43 by dbisko           ###   ########.fr        #
+#    Updated: 2024/08/07 11:47:44 by dbisko           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,28 +16,33 @@ SRCS = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c f
        ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c get_next_line.c ft_printf.c ft_print_str.c \
        ft_print_pnt.c ft_print_number.c ft_hex.c
 B_SRCS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
+
 OBJS = $(SRCS:.c=.o)
 B_OBJS = $(B_SRCS:.c=.o)
 
 CC = cc
-RM = rm -f
 CFLAGS = -Wall -Wextra -Werror
+RM = rm -f
+
 NAME = libft.a
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -c $(SRCS)
 	ar rcs $(NAME) $(OBJS)
-	$(RM) $(OBJS) $(B_OBJS)
 
-bonus: $(B_OBJS) $(NAME)
-	$(CC) $(CFLAGS) -c $(B_SRCS)
-	ar rcs $(NAME) $(B_OBJS)
+bonus: $(OBJS) $(B_OBJS)
+	ar rcs $(NAME) $(OBJS) $(B_OBJS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
 	$(RM) $(OBJS) $(B_OBJS)
+
 fclean: clean
 	$(RM) $(NAME)
+
 re: fclean all
 
 .PHONY: all clean fclean re bonus

@@ -106,7 +106,7 @@ void	calculate_offset(t_fdf *map)
 	map->map_width = (map->max_x - map->min_x) * map->zoom;
 	map->map_height = (map->max_y - map->min_y) * map->zoom;
 	map->offset_x = WIDTH / 2;
-	map->offset_y = (HEIGHT - map-> map_height) / 2;
+	map->offset_y = HEIGHT / 2;
 }
 
 void	put_line_to_image(t_fdf *map)

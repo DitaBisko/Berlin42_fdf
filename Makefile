@@ -1,26 +1,38 @@
+#***************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: dbisko <dbisko@student.42berlin.de>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/13 15:13:25 by dbisko            #+#    #+#              #
+#    Updated: 2024/08/07 11:47:44 by dbisko           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = fdf
 
-LIBFT_A = libft/libft.a
-MLX_A = mlx/libmlx.a
+LIBFT = libft
+MLX = minilibx-linux
 
-LIBFT = libft/
-MLX = mlx/
+LIBFT_A = $(LIBFT)/libft.a
+MLX_A = $(MLX)/libmlx.a
 
-INCLUDES = -Imlx -I. -Ilibft
+INCLUDES = -I$(MLX) -I. -I$(LIBFT)
 
 CC = cc
-FLAGS = -Werror -Wextra -Wall $(INCLUDE)
+FLAGS = -Werror -Wextra -Wall $(INCLUDES)
 LDFLAGS = -L$(LIBFT) -lft -L$(MLX) -lmlx -lXext -lX11 -lm
 
 SRC = new_fdf.c error_handling.c parse.c parse_utils.c draw.c parse_color.c parse_color_utils.c
-OBJS = $(SRC:%.c=%.o)
+OBJS = $(SRC:.c=.o)
 
 RM = rm -f
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_A) $(MLX_A)
-	@$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+	@$(CC) $(FLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 $(LIBFT_A):
 	@$(MAKE) -s -C $(LIBFT)
@@ -29,10 +41,10 @@ $(MLX_A):
 	@$(MAKE) -s -C $(MLX)
 
 clean:
-	RM $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-	RM $(NAME) $(OBJS)
+	$(RM) $(NAME)
 
 re: fclean all
 

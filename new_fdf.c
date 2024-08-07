@@ -13,6 +13,7 @@
 #include "fdf.h"
 #include <signal.h>
 
+/*
 void	print_arr_values(t_fdf *map)
 {
 	int	row;
@@ -47,25 +48,22 @@ void	print_arr_colors(t_fdf *map)
 		row++;
 	}
 }
-/*
-int	handle_input(int key_code, t_fdf *map)
-{
-	if (key_code == KEY_ESC)
-	{
-		mlx_destroy_display(map->mlx);
-		mlx_destroy_window(map->win);
-		free_fdf(map);
-		exit(1);
-	}
-	printf("The key: %d has been realised\n", key_code);
-	return 0;
-}
 */
 
-void handle_exit(t_fdf *map)
+int	handle_input(int key_code, t_fdf *map)
+{
+	if (key_code == 65307)
+	{
+		free_fdf(map);
+		exit (1);
+	}
+	return (0);
+}
+
+int	close_win(t_fdf *map)
 {
 	free_fdf(map);
-	exit (0);
+	exit (1);
 }
 
 int	main(int ac, char **av)
@@ -82,12 +80,12 @@ int	main(int ac, char **av)
 	if (!map->mlx)
 		return_error("MLX initialization failed\n");
 	map->win = mlx_new_window(map->mlx, WIDTH, HEIGHT, av[1]);
+	mlx_hook(map->win, 17, 0L, close_win, map);
 	map->zoom = 20;
 	map->angle = 0.523599;
 	draw(map);
-	//mlx_key_hook(map->mlx, &handle_input, NULL);
-	signal(SIGINT, (void (*)(int))handle_exit);
+	mlx_hook(map->win, 2, 1L << 0, handle_input, map);
 	mlx_loop(map->mlx);
-	//free_fdf(map);
+	free_fdf(map);
 	exit (0);
 }

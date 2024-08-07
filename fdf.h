@@ -19,13 +19,13 @@
 # include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
-# include "mlx/mlx.h"
+# include "minilibx-linux/mlx.h"
 # include "libft/libft.h"
 # include "stdbool.h"
+#include <X11/keysym.h>
 
 # define WIDTH 1000
 # define HEIGHT 1000
-# define KEY_ESC 65307
 
 typedef struct s_fdf
 {
@@ -109,8 +109,5 @@ int	hex_to_int(const char *hex_str);
 int	adjust_red(int min, int max, float ratio);
 int	adjust_green(int min, int max, float ratio);
 int	adjust_blue(int min, int max, int ratio);
-
-// handle input
-int	handle_input(int key_code, t_fdf *map);
 
 #endif

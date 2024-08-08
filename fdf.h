@@ -81,7 +81,7 @@ typedef struct s_fdf
 // error handling
 void	return_error(char *err_message);
 void	free_int_arr(int **arr, int count);
-void	free_fdf(t_fdf *map);
+int		free_fdf(t_fdf *map);
 void	free_split_line(char **split_line, int i);
 void	safe_free_line(char *line);
 

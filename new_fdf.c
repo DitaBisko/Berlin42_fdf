@@ -13,7 +13,6 @@
 #include "fdf.h"
 #include <signal.h>
 
-/*
 void	print_arr_values(t_fdf *map)
 {
 	int	row;
@@ -32,6 +31,7 @@ void	print_arr_values(t_fdf *map)
 		row++;
 	}
 }
+
 void	print_arr_colors(t_fdf *map)
 {
 	int row = 0;
@@ -48,7 +48,6 @@ void	print_arr_colors(t_fdf *map)
 		row++;
 	}
 }
-*/
 
 int	handle_input(int key_code, t_fdf *map)
 {
@@ -63,7 +62,15 @@ int	handle_input(int key_code, t_fdf *map)
 int	close_win(t_fdf *map)
 {
 	free_fdf(map);
-	exit (1);
+	return (0);
+}
+
+void	init_map(t_fdf *map, char *str)
+{
+	map->mlx = mlx_init();
+	if (!map->mlx)
+		return_error("MLX initialization failed\n");
+	map->win = mlx_new_window(map->mlx, WIDTH, HEIGHT, str);
 }
 
 int	main(int ac, char **av)
@@ -72,16 +79,16 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		return_error("Usage: ./fdf <filename>\n");
+	printf("Process started\n");
 	map = malloc(sizeof (t_fdf));
 	if (!map)
 		return_error("Error: map malloc fail\n");
+	printf("Memmory allocated for map\n");
 	parse_file(av[1], map);
-	map->mlx = mlx_init();
-	if (!map->mlx)
-		return_error("MLX initialization failed\n");
-	map->win = mlx_new_window(map->mlx, WIDTH, HEIGHT, av[1]);
+	print_arr_values(map);
+	init_map(map, av[1]);
 	mlx_hook(map->win, 17, 0L, close_win, map);
-	map->zoom = 20;
+	map->zoom = 10;
 	map->angle = 0.523599;
 	draw(map);
 	mlx_hook(map->win, 2, 1L << 0, handle_input, map);

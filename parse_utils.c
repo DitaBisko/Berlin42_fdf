@@ -23,6 +23,7 @@ int	map_height(char *file)
 	if (fd == -1)
 		return_error("Error: opening file\n");
 	line = get_next_line(fd);
+	printf("line: %s\n", line);
 	while (line != NULL)
 	{
 		count++;

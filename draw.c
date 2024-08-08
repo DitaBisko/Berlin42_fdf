@@ -104,9 +104,10 @@ void	calculate_offset(t_fdf *map)
 {
 	calculate_box(map);
 	map->map_width = (map->max_x - map->min_x) * map->zoom;
-	map->map_height = (map->max_y - map->min_y) * map->zoom;
-	map->offset_x = WIDTH / 2;
-	map->offset_y = HEIGHT / 2;
+    map->map_height = (map->max_y - map->min_y) * map->zoom;
+ 	map->offset_x = (WIDTH - map->map_width) / 2 - (map->min_x * map->zoom);
+    map->offset_y = (HEIGHT - map->map_height) / 2 - (map->min_y * map->zoom);
+
 }
 
 void	put_line_to_image(t_fdf *map)
@@ -237,5 +238,4 @@ void	draw(t_fdf *map)
 	calculate_offset(map);
 	draw_lines(map);
 	mlx_put_image_to_window(map->mlx, map->win, map->img, 0, 0);
-	//mlx_destroy_image();
 }

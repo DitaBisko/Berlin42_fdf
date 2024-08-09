@@ -137,18 +137,6 @@ void	put_line_to_image(t_fdf *map)
 	}
 }
 
-void	reverse_color_direction(t_fdf *map)
-{
-	int	temp;
-
-	if (map->y > map->y1)
-	{
-		temp = map->color_from;
-		map->color_from = map->color_to;
-		map->color_to = temp;
-	}
-}
-
 void	draw_horizontal(int row, int col, t_fdf *map)
 {
 	float	x;
@@ -164,7 +152,6 @@ void	draw_horizontal(int row, int col, t_fdf *map)
 	map->x1 = x;
 	map->y1 = y;
 	map->color_to = map->arr_color[row][col + 1];
-	reverse_color_direction(map);
 	put_line_to_image(map);
 }
 
@@ -183,7 +170,6 @@ void	draw_vertical(int row, int col, t_fdf *map)
 	map->x1 = x;
 	map->y1 = y;
 	map->color_to = map->arr_color[row + 1][col];
-	reverse_color_direction(map);
 	put_line_to_image(map);
 }
 
@@ -239,3 +225,18 @@ void	draw(t_fdf *map)
 	draw_lines(map);
 	mlx_put_image_to_window(map->mlx, map->win, map->img, 0, 0);
 }
+
+
+/*
+void	reverse_color_direction(t_fdf *map)
+{
+	int	temp;
+
+	if (map->y > map->y1)
+	{
+		temp = map->color_from;
+		map->color_from = map->color_to;
+		map->color_to = temp;
+	}
+}
+*/

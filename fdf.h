@@ -22,7 +22,7 @@
 # include "minilibx-linux/mlx.h"
 # include "libft/libft.h"
 # include "stdbool.h"
-#include <X11/keysym.h>
+# include <X11/keysym.h>
 
 # define WIDTH 1000
 # define HEIGHT 1000

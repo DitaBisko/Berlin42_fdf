@@ -23,12 +23,15 @@ void	free_int_arr(int **arr, int count)
 	int	i;
 
 	i = 0;
-	while (i < count)
+	if (arr != NULL)
 	{
-		if (arr[i] != NULL)
-			free(arr[i]);
-		i++;
-	}
+		while (i < count)
+		{
+			if (arr[i] != NULL)
+				free(arr[i]);
+			i++;
+		}
+	}	
 	free(arr);
 }
 
@@ -36,7 +39,7 @@ void	free_split_line(char **split_line, int i)
 {
 	if (split_line != NULL)
 	{
-		while (i > -1)
+		while (i >= 0)
 		{
 			if (split_line[i] != NULL)
 				free(split_line[i]);
@@ -49,10 +52,7 @@ void	free_split_line(char **split_line, int i)
 void	safe_free_line(char *line)
 {
 	if (line != NULL)
-	{
 		free(line);
-		line = NULL;
-	}
 }
 
 int free_fdf(t_fdf *map)

@@ -45,6 +45,8 @@ void	set_max_min_z(t_fdf *map)
 
 	max = map->arr_map[0][0];
 	min = map->arr_map[0][0];
+	printf("map min:%d\n", min);
+	printf("map min:%d\n", max);
 	row = 0;
 	while (row < map->arr_height)
 	{
@@ -61,6 +63,7 @@ void	set_max_min_z(t_fdf *map)
 	}
 	map->min_z = min;
 	map->max_z = max;
+	printf("z min:%d, z max:%d\n", map->min_z, map->max_z);
 }
 
 void	allocate_mem_arr(t_fdf *map)
@@ -95,32 +98,38 @@ void	fill_arr_map(char *file, t_fdf *map)
 	y = 0;
 	while (line != NULL)
 	{
-		printf("Line for filling arr: %s\n", line);
 		x = 0;
 		split_line = ft_split(line, ' ');
-		while (split_line[x] != NULL)
+		while (x < map->arr_width)
 		{
+			printf("value:%d ", ft_atoi(split_line[x]));
 			map->arr_map[y][x] = ft_atoi(split_line[x]);
 			x++;
 		}
+		printf("\n");
 		free_split_line(split_line, x);
-		safe_free_line(line);
+		free(line);
 		line = get_next_line(fd);
 		y++;
 	}
-	safe_free_line(line);
+	free(line);
 	close(fd);
 }
 
 void	parse_file(char *file, t_fdf *map)
 {
-	map->arr_height = map_height(file);
-	map->arr_width = map_width(file);
-	printf("map height:%d\n", map->arr_height);
-	printf("map width:%d\n", map->arr_width);
+	map->arr_height = 0;
+	map->arr_width = 0;
+	printf("arr height:%d, arr width:%d\n", map->arr_height, map->arr_width);
+	map->arr_height = (float)map_height(file);
+	map->arr_width = (float)map_width(file);
+	printf("arr height:%d, arr width:%d\n", map->arr_height, map->arr_width);
 	allocate_mem_arr(map);
-	printf("mem allocated for arr map\n");
+	printf("memory allocated for map arr\n");
 	fill_arr_map(file, map);
+	printf("arr map filled\n");
 	set_max_min_z(map);
+	printf("min max z set\n");
 	fill_color_arr(file, map);
+	printf("collor filed\n");
 }

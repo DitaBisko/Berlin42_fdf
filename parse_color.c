@@ -68,28 +68,16 @@ void	extract_color(char *line, t_fdf *map, int row)
 {
 	int		col;
 	char	**split_line;
-	char	*color;
 
 	col = 0;
 	split_line = ft_split(line, ' ');
-	while (split_line[col])
+	while (col < map->arr_width)
 	{
-		color = ft_strchr(*split_line, ',');
-		if (color != NULL)
-		{
-			color++;
-			if (color[0] == '0' && color[1] == 'x')
-				color += 2;
-			map->arr_color[row][col] = hex_to_int(color);
-		}
-		else
-		{
-			map->arr_color[row][col]
+		map->arr_color[row][col]
 				= calculate_color(map->arr_map[row][col], map);
-		}
 		col++;
 	}
-	free_arr(split_line, col);
+	free_split_line(split_line, col);
 }
 
 void	fill_color_arr(char *file, t_fdf *map)
@@ -101,6 +89,7 @@ void	fill_color_arr(char *file, t_fdf *map)
 	map->max_color = 16777215;
 	map->min_color = 65535;
 	allocate_mem_color(map);
+	printf("memory allocated for collor arr\n");
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return_error("Error: opening file\n");
@@ -116,3 +105,36 @@ void	fill_color_arr(char *file, t_fdf *map)
 	safe_free_line(line);
 	close(fd);
 }
+
+
+/*
+void	extract_color(char *line, t_fdf *map, int row)
+{
+	int		col;
+	char	**split_line;
+	char	*color;
+
+	col = 0;
+	split_line = ft_split(line, ' ');
+	while (col < map->arr_width)
+	{
+		color = ft_strchr(*split_line, ',');
+		if (color != NULL)
+		{
+			printf("color != NULL trigered\n");
+			color++;
+			if (color[0] == '0' && color[1] == 'x')
+				color += 2;
+			map->arr_color[row][col] = hex_to_int(color);
+		}
+		else
+		{
+			printf("calculate color trigered\n");
+			map->arr_color[row][col]
+				= calculate_color(map->arr_map[row][col], map);
+		}
+		col++;
+	}
+	free_split_line(split_line, col);
+}
+*/

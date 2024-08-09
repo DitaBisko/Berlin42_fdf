@@ -18,6 +18,7 @@ void	print_arr_values(t_fdf *map)
 	int	row;
 
 	row = 0;
+	printf("Printing arr values\n");
 	while (row < map->arr_height)
 	{
 		int	col = 0;
@@ -65,6 +66,7 @@ int	close_win(t_fdf *map)
 	return (0);
 }
 
+/*
 void	init_map(t_fdf *map, char *str)
 {
 	map->mlx = mlx_init();
@@ -72,6 +74,7 @@ void	init_map(t_fdf *map, char *str)
 		return_error("MLX initialization failed\n");
 	map->win = mlx_new_window(map->mlx, WIDTH, HEIGHT, str);
 }
+*/
 
 int	main(int ac, char **av)
 {
@@ -79,16 +82,19 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		return_error("Usage: ./fdf <filename>\n");
-	printf("Process started\n");
 	map = malloc(sizeof (t_fdf));
 	if (!map)
 		return_error("Error: map malloc fail\n");
-	printf("Memmory allocated for map\n");
+	printf("memory allocated for map\n");
 	parse_file(av[1], map);
+	printf("File parrsed\n");
 	print_arr_values(map);
-	init_map(map, av[1]);
+	map->mlx = mlx_init();
+	if (!map->mlx)
+		return_error("MLX initialization failed\n");
+	map->win = mlx_new_window(map->mlx, WIDTH, HEIGHT, av[1]);
 	mlx_hook(map->win, 17, 0L, close_win, map);
-	map->zoom = 10;
+	map->zoom = 20;
 	map->angle = 0.523599;
 	draw(map);
 	mlx_hook(map->win, 2, 1L << 0, handle_input, map);

@@ -52,13 +52,18 @@ void	extract_color(char *line, t_fdf *map, int row)
 {
 	int		col;
 	char	**split_line;
+	char	**split_color;
 
 	col = 0;
 	split_line = ft_split(line, ' ');
 	while (col < map->arr_width)
 	{
-		map->arr_color[row][col]
-			= calculate_color(map->arr_map[row][col], map);
+		split_color = ft_split(split_line[col], ',');
+		if (split_color[1])
+			map->arr_color[row][col] = hex_to_int(split_color[1]);
+		else
+			map->arr_color[row][col]
+				= calculate_color(map->arr_map[row][col], map);
 		col++;
 	}
 	free_split_line(split_line, col);

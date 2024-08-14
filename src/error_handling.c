@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../include/fdf.h"
 
 void	return_error(char *err_message)
 {
@@ -31,7 +31,7 @@ void	free_int_arr(int **arr, int count)
 				free(arr[i]);
 			i++;
 		}
-	}	
+	}
 	free(arr);
 }
 
@@ -55,20 +55,17 @@ void	safe_free_line(char *line)
 		free(line);
 }
 
-int free_fdf(t_fdf *map)
+int	free_fdf(t_fdf *map)
 {
 	mlx_destroy_image(map->mlx, map->img);
 	mlx_destroy_window(map->mlx, map->win);
 	mlx_destroy_display(map->mlx);
-
 	if (map->mlx != NULL)
 		free(map->mlx);
-
 	if (map->arr_map != NULL)
-        free_int_arr(map->arr_map, map->arr_height);
-    if (map->arr_color != NULL)
-        free_int_arr(map->arr_color, map->arr_height);
-
+		free_int_arr(map->arr_map, map->arr_height);
+	if (map->arr_color != NULL)
+		free_int_arr(map->arr_color, map->arr_height);
 	if (map != NULL)
 		free(map);
 	exit (0);

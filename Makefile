@@ -10,42 +10,77 @@
 #                                                                              #
 # **************************************************************************** #
 
+# Name of the executable
 NAME = fdf
 
-LIBFT = libft
-MLX = minilibx-linux
+# Directories
+LIBFTDIR = src/libft
+MLXDIR = src/minilibx
+OBJ_DIR = obj
 
-LIBFT_A = $(LIBFT)/libft.a
-MLX_A = $(MLX)/libmlx.a
-
-INCLUDES = -I$(MLX) -I. -I$(LIBFT)
-
+# Libraries and compiler
+LIBFT = $(LIBFTDIR)/libft.a
+MLX = $(MLXDIR)/libmlx.a
 CC = cc
-FLAGS = -Werror -Wextra -Wall $(INCLUDES)
-LDFLAGS = -L$(LIBFT) -lft -L$(MLX) -lmlx -lXext -lX11 -lm
-
-SRC = new_fdf.c error_handling.c parse.c parse_utils.c draw.c parse_color.c parse_color_utils.c
-OBJS = $(SRC:.c=.o)
-
+CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 
-all: $(NAME)
+# Source and object files
+SRC_FILES = fdf draw parse_color_utils parse_color parse_utils parse error_handling draw_utils draw_utils_more
+SRC = $(addsuffix .c, $(addprefix src/, $(SRC_FILES)))
+OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-$(NAME): $(OBJS) $(LIBFT_A) $(MLX_A)
-	@$(CC) $(FLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+# Include directories
+INCLUDES = -Iinclude -I$(LIBFTDIR) -I$(MLXDIR)
 
-$(LIBFT_A):
-	@$(MAKE) -s -C $(LIBFT)
+# Default target
+all: setup $(OBJ_DIR) $(NAME)
 
-$(MLX_A):
-	@$(MAKE) -s -C $(MLX)
+# Compiling object files
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# Linking the executable
+$(NAME): $(OBJ) $(LIBFT) $(MLX)
+	@echo "Linking the executable..."
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFTDIR) -lft -L$(MLXDIR) -lmlx -lXext -lX11 -lm -o $(NAME)
+	@echo "$(NAME) is ready."
+
+# Ensure libft is built
+$(LIBFT):
+	@$(MAKE) -C $(LIBFTDIR)
+
+# Ensure MiniLibX is built
+$(MLX):
+	@if [ ! -d "$(MLXDIR)" ]; then \
+        echo "Cloning MiniLibX repository..."; \
+        git clone https://github.com/42Paris/minilibx-linux.git $(MLXDIR) >/dev/null 2>&1; \
+    fi
+	@$(MAKE) -s -C $(MLXDIR)
+	@echo "MiniLibX compiled."
+
+# Create the object directory
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
+
+# Clean object files
 clean:
-	$(RM) $(OBJS)
+	@$(MAKE) -C $(LIBFTDIR) clean
+	@$(MAKE) -C $(MLXDIR) clean
+	@$(RM) -r $(OBJ_DIR)
+	@echo "Object files cleaned."
 
+# Clean object files and executable
 fclean: clean
-	$(RM) $(NAME)
-
+	@$(MAKE) -C $(LIBFTDIR) fclean
+	@$(RM) $(NAME)
+	@echo "$(NAME) and related files cleaned."
+	
+# Rebuild everything
 re: fclean all
 
-.PHONY: all clean fclean re
+# Setup target for cloning and building MiniLibX
+setup: $(MLX)
+
+.PHONY: all clean fclean re setup

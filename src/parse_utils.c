@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../include/fdf.h"
 
 int	map_height(char *file)
 {
 	char	*line;
 	int		fd;
 	int		count;
-	
+
 	count = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -25,14 +25,12 @@ int	map_height(char *file)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		printf("line:%s\n", line);
 		count++;
 		safe_free_line(line);
 		line = get_next_line(fd);
 	}
 	safe_free_line(line);
 	close(fd);
-	printf("count:%i\n", count);
 	return (count);
 }
 
@@ -55,6 +53,29 @@ int	map_width(char *file)
 	}
 	free(line);
 	close(fd);
-	printf("count:%i\n", count);
+	return (count);
+}
+
+int	count_digits(char *str)
+{
+	int	digit_flag;
+	int	count;
+
+	count = 0;
+	digit_flag = 0;
+	while (*str != '\0' && *str != '\n')
+	{
+		if (*str != ' ')
+		{
+			if (digit_flag == 0)
+			{
+				count++;
+				digit_flag = 1;
+			}
+		}
+		else
+			digit_flag = 0;
+		str++;
+	}
 	return (count);
 }

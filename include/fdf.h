@@ -19,13 +19,13 @@
 # include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
-# include "minilibx-linux/mlx.h"
-# include "libft/libft.h"
+# include "../src/minilibx/mlx.h"
+# include "../src/libft/libft.h"
 # include "stdbool.h"
 # include <X11/keysym.h>
 
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 800
+# define HEIGHT 800
 
 typedef struct s_fdf
 {
@@ -41,9 +41,6 @@ typedef struct s_fdf
 
 	int 	color_from;
 	int 	color_to;
-
-	float 	total_len;
-	float 	distance_traveled;
 
 	float	map_width;
 	float	map_height;
@@ -67,6 +64,7 @@ typedef struct s_fdf
 
 	float 	zoom;
 	float 	angle;
+	float	z_scale;
 
 	float 	min_x;
 	float	max_x;
@@ -88,8 +86,9 @@ void	safe_free_line(char *line);
 // parse_utils.c
 int	map_height(char *file);
 int	map_width(char *file);
+int	count_digits(char *str);
 
-// parse.c parsing map
+// parse.c
 int 	count_digits(char *str);
 void	parse_file(char *file, t_fdf *map);
 
@@ -98,6 +97,19 @@ int	main(int ac, char **av);
 
 // draw.c
 void	draw(t_fdf *map);
+
+// draw_utils.c
+float	ft_f_abs(float a);
+int		ft_i_abs(int a);
+float	calculate_max(float x_step, float y_step);
+void	perspective(float *x, float *y, float z, t_fdf *map);
+void	set_min_max_coordinates(t_fdf *map);
+
+// draw_utils_more.c
+void	update_min_max_xy(float x, float y, t_fdf *map);
+void	calculate_box(t_fdf *map);
+void	calculate_offset(t_fdf *map);
+void	set_and_transform_xy(t_fdf *map, int col, int row);
 
 // parse_color.c
 void	fill_color_arr(char *file, t_fdf *map);

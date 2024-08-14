@@ -19,7 +19,7 @@ void	free_arr(char **arr, int count)
 	i = 0;
 	while (i < count)
 	{
-		if(arr[i] != NULL)
+		if (arr[i] != NULL)
 			free(arr[i]);
 		i++;
 	}

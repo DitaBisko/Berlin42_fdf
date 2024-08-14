@@ -19,7 +19,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	unsigned int	string_index;
 
 	joined_s = (char *)malloc((ft_strlen(s1)
-							   + ft_strlen(s2) + 1) * sizeof(char));
+				+ ft_strlen(s2) + 1) * sizeof(char));
 	if (!joined_s)
 		return (NULL);
 	joined_index = 0;

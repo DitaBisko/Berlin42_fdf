@@ -11,12 +11,11 @@
 /* ************************************************************************** */
 
 #ifndef FDF_H
-# define	FDF_H
+# define FDF_H
 
 # include <math.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
 # include "../src/minilibx/mlx.h"
@@ -34,13 +33,15 @@ typedef struct s_fdf
 	void	*win;
 
 	int		**arr_map;
-	int 	**arr_color;
-	int 	*pixel_data;
-	int 	arr_height;
-	int 	arr_width;
+	int		**arr_color;
+	int		*pixel_data;
+	int		arr_height;
+	int		arr_width;
 
-	int 	color_from;
-	int 	color_to;
+	int		color_from;
+	int		color_to;
+	int		pixel_color;
+	int		color_step;
 
 	float	map_width;
 	float	map_height;
@@ -55,45 +56,51 @@ typedef struct s_fdf
 	int		max_color;
 	int		min_color;
 
-	float 	x;
-	float 	y;
-	float 	z;
-	float 	x1;
-	float 	y1;
-	float 	z1;
+	float	x;
+	float	y;
+	float	z;
+	float	x1;
+	float	y1;
+	float	z1;
 
-	float 	zoom;
-	float 	angle;
+	float	zoom;
+	float	angle;
 	float	z_scale;
 
-	float 	min_x;
+	float	min_x;
 	float	max_x;
 	float	min_y;
 	float	max_y;
 
-	int 	max_z;
-	int 	min_z;
+	int		max_z;
+	int		min_z;
 
 }				t_fdf;
 
-// error handling
+// error_handling.c
 void	return_error(char *err_message, t_fdf *map);
 void	free_int_arr(int **arr, int count);
 int		free_fdf(t_fdf *map);
 void	free_split_line(char **split_line, int i);
 void	safe_free_line(char *line);
 
+// error_handling_more.c
+void	invalid_file_err(char *message);
+void	empty_file(char *message, t_fdf *map);
+void	file_validity(char *file);
+
 // parse_utils.c
-int	map_height(char *file);
-int	map_width(char *file);
-int	count_digits(char *str);
+int		map_height(char *file);
+int		map_width(char *file);
+int		count_digits(char *str);
 
 // parse.c
-int 	count_digits(char *str);
+int		count_digits(char *str);
 void	parse_file(char *file, t_fdf *map);
 
-// new_fdf.c
-int	main(int ac, char **av);
+// main.c
+int		main(int ac, char **av);
+void	empty_file(char *message, t_fdf *map);
 
 // draw.c
 void	draw(t_fdf *map);
@@ -117,9 +124,9 @@ int		calculate_color(int z_value, t_fdf *map);
 int		calculate_color_put_pixel(t_fdf *map);
 
 // parse_color_utils.c
-int	hex_to_int(const char *hex_str);
-int	adjust_red(int min, int max, float ratio);
-int	adjust_green(int min, int max, float ratio);
-int	adjust_blue(int min, int max, int ratio);
+int		hex_to_int(const char *hex_str);
+int		adjust_red(int min, int max, float ratio);
+int		adjust_green(int min, int max, float ratio);
+int		adjust_blue(int min, int max, int ratio);
 
 #endif

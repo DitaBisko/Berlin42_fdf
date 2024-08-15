@@ -25,11 +25,14 @@ void	put_line_to_image(t_fdf *map)
 	max = calculate_max((map->x1 - x), (map->y1 - y));
 	x_step = (map->x1 - x) / max;
 	y_step = (map->y1 - y) / max;
+	map->color_step = (int)round((map->color_to - map->color_from) / max);
+	map->pixel_color = map->color_from;
 	while (ft_f_abs(x - map->x1) > 0.5 || ft_f_abs(y - map->y1) > 0.5)
 	{
 		if ((y >= 20 && y < HEIGHT - 20) && (x >= 20 && x < WIDTH - 20))
 			map->pixel_data[(int)roundf(y) * WIDTH + (int)roundf(x)]
-				= map->color_from;
+				= map->pixel_color;
+		map->pixel_color += map->color_step;
 		x = x + x_step;
 		y = y + y_step;
 	}
@@ -49,6 +52,7 @@ void	draw_horizontal(int row, int col, t_fdf *map)
 	y = (y * map->zoom) + map->offset_y;
 	map->x1 = x;
 	map->y1 = y;
+	map->color_from = map->arr_color[row][col];
 	map->color_to = map->arr_color[row][col + 1];
 	put_line_to_image(map);
 }
@@ -67,6 +71,7 @@ void	draw_vertical(int row, int col, t_fdf *map)
 	y = (y * map->zoom) + map->offset_y;
 	map->x1 = x;
 	map->y1 = y;
+	map->color_from = map->arr_color[row][col];
 	map->color_to = map->arr_color[row + 1][col];
 	put_line_to_image(map);
 }
@@ -105,6 +110,7 @@ void	draw(t_fdf *map)
 	map->pixel_data = (int *) mlx_get_data_addr(map->img,
 			&map->bpp, &map->size_line, &map->endian);
 	calculate_offset(map);
+	map->pixel_color = 0;
 	draw_lines(map);
 	mlx_put_image_to_window(map->mlx, map->win, map->img, 0, 0);
 }

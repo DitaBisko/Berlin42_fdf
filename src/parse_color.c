@@ -79,7 +79,7 @@ void	fill_color_arr(char *file, t_fdf *map)
 	char	*line;
 
 	map->max_color = 65535;
-	map->min_color = 16777215;
+	map->min_color = 32768;
 	allocate_mem_color(map);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)

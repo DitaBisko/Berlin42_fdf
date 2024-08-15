@@ -26,7 +26,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 
 # Source and object files
-SRC_FILES = fdf draw parse_color_utils parse_color parse_utils parse error_handling draw_utils draw_utils_more
+SRC_FILES = main draw parse_color_utils parse_color parse_utils parse error_handling draw_utils draw_utils_more error_handling_more
 SRC = $(addsuffix .c, $(addprefix src/, $(SRC_FILES)))
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

@@ -105,6 +105,8 @@ void	parse_file(char *file, t_fdf *map)
 	map->arr_width = (float)map_width(file);
 	if (map->arr_width == -1)
 		return_error("Error: opening file\n", map);
+	if (map->arr_height == 0 || map->arr_width == 0)
+		empty_file("Error: empty file\n", map);
 	allocate_mem_arr(map);
 	fill_arr_map(file, map);
 	set_max_min_z(map);

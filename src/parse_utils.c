@@ -21,7 +21,7 @@ int	map_height(char *file)
 	count = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return_error("Error: opening file\n");
+		return (-1);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
@@ -43,7 +43,7 @@ int	map_width(char *file)
 	count = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return_error("Error: opening file\n");
+		return (-1);
 	line = get_next_line(fd);
 	count = count_digits(line);
 	while (line != NULL)

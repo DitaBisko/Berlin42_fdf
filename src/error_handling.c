@@ -12,9 +12,10 @@
 
 #include "../include/fdf.h"
 
-void	return_error(char *err_message)
+void	return_error(char *err_message, t_fdf *map)
 {
-	perror(err_message);
+	ft_printf("%s", err_message);
+	free_fdf(map);
 	exit (1);
 }
 

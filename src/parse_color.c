@@ -18,7 +18,7 @@ void	allocate_mem_color(t_fdf *map)
 
 	map->arr_color = malloc(map->arr_height * sizeof(int *));
 	if (map->arr_color == NULL)
-		return_error("Error: map y position malloc fail\n");
+		return_error("Error: map y position malloc fail\n", map);
 	y = 0;
 	while (y < map->arr_height)
 	{
@@ -56,11 +56,14 @@ void	extract_color(char *line, t_fdf *map, int row)
 
 	col = 0;
 	split_line = ft_split(line, ' ');
-	while (col < map->arr_width)
+	while (split_line[col] != NULL && col < map->arr_width)
 	{
-		split_color = ft_split(split_line[col], ',');
-		if (split_color[1])
+		if (ft_strchr(split_line[col], ',') != NULL)
+		{
+			split_color = ft_split(split_line[col], ',');
 			map->arr_color[row][col] = hex_to_int(split_color[1]);
+			free_split_line(split_color, 1);
+		}
 		else
 			map->arr_color[row][col]
 				= calculate_color(map->arr_map[row][col], map);
@@ -80,7 +83,7 @@ void	fill_color_arr(char *file, t_fdf *map)
 	allocate_mem_color(map);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return_error("Error: opening file\n");
+		return_error("Error: opening file\n", map);
 	line = get_next_line(fd);
 	row = 0;
 	while (line != NULL)

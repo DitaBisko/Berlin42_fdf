@@ -45,7 +45,7 @@ void	allocate_mem_arr(t_fdf *map)
 
 	map->arr_map = malloc(map->arr_height * sizeof (int *));
 	if (map->arr_map == NULL)
-		return_error("Error: map y position malloc fail\n");
+		return_error("Error: map y position malloc fail\n", map);
 	y = 0;
 	while (y < map->arr_height)
 	{
@@ -79,7 +79,7 @@ void	fill_arr_map(char *file, t_fdf *map)
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return_error("Error: opening file\n");
+		return_error("Error: opening file\n", map);
 	line = get_next_line(fd);
 	row = 0;
 	while (line != NULL)
@@ -100,7 +100,11 @@ void	parse_file(char *file, t_fdf *map)
 	map->arr_height = 0;
 	map->arr_width = 0;
 	map->arr_height = (float)map_height(file);
+	if (map->arr_height == -1)
+		return_error("Error: opening file\n", map);
 	map->arr_width = (float)map_width(file);
+	if (map->arr_width == -1)
+		return_error("Error: opening file\n", map);
 	allocate_mem_arr(map);
 	fill_arr_map(file, map);
 	set_max_min_z(map);
